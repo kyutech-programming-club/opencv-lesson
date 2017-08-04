@@ -1,0 +1,9 @@
+<package format="2">
+  <name>opencv3mixing</name>
+  <version>0.1.0</version>
+  <description>
+    This is opencv3mixing.
+  </description>
+  <maintainer email="tamura.kosei905@mail.kyutech.jp">Tamura kosei</maintainer>
+  <license>BSD</license>
+</package>
