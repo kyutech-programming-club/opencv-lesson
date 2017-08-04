@@ -5,6 +5,7 @@
     This is opencv3mixing.
   </description>
   <maintainer email="tamura.kosei905@mail.kyutech.jp">Tamura kosei</maintainer>
+  <maintainer email="o111027y@mail.kyutech.jp">Doi Yusuke</maintainer>
   <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
