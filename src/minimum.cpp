@@ -2,15 +2,9 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
+
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-
-namespace
-{
-
-const std::string OPENCV_WINDOW = "Image window";
-
-}
 
 class ImageConverter
 {
@@ -27,10 +21,6 @@ class ImageConverter
     image_sub_ = it_.subscribe("/camera/image_raw", 1,
         &ImageConverter::imageCb, this);
     image_pub_ = it_.advertise("/image_converter/output_video", 1);
-  }
-
-  ~ImageConverter()
-  {
   }
 
   void imageCb(const sensor_msgs::ImageConstPtr& msg)
