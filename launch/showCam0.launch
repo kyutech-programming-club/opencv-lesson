@@ -1,0 +1,8 @@
+<launch>
+   <node pkg="uvc_camera" type="uvc_camera_node" name="uvc_camera"/>
+   <node pkg="opencv3mixing" type="minimum" name="test"/>
+   <node pkg="image_view" type="image_view" name="view">
+      <remap from="image" to="/image_converter/output_video" />
+   </node>
+   
+</launch>
