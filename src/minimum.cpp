@@ -9,17 +9,20 @@
 class ImageConverter
 {
   ros::NodeHandle nh_;
+  ros::NodeHandle pnh_;
   image_transport::ImageTransport it_;
+  image_transport::ImageTransport pit_;
   image_transport::Subscriber image_sub_;
   image_transport::Publisher image_pub_;
 
-  public:
+public:
   ImageConverter()
-    : it_(nh_)
+    : pnh_ {"~"},
+      it_ {nh_},
+      pit_ {pnh_},
+      image_sub_ {it_.subscribe("input_image", 1, &ImageConverter::imageCb, this)},
+      image_pub_ {pit_.advertise("image_raw", 1)}
   {
-    // Subscrive to input video feed and publish output video feed
-    image_sub_ = it_.subscribe("input_image", 1, &ImageConverter::imageCb, this);
-    image_pub_ = it_.advertise("output_image", 1);
   }
 
   void imageCb(const sensor_msgs::ImageConstPtr& msg)
