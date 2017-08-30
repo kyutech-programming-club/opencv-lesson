@@ -1,8 +1,10 @@
 <launch>
-   <node pkg="uvc_camera" type="uvc_camera_node" name="uvc_camera"/>
-   <node pkg="opencv3mixing" type="image_converter" name="test"/>
-   <node pkg="image_view" type="image_view" name="view">
-      <remap from="image" to="/image_converter/output_video" />
-   </node>
-   
+  <node pkg="cv_camera" type="cv_camera_node" name="camera" />
+
+  <node pkg="opencv3mixing" type="minimum_node" name="image_converter">
+    <remap from="input_image" to="camera/image_raw" />
+    <remap from="~image_raw" to="image" />
+  </node>
+
+  <node pkg="image_view2" type="image_view2" name="view" />
 </launch>
