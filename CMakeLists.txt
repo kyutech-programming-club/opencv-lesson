@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(opencv3mixing)
-
 add_compile_options(-std=c++11)
 
-find_package(catkin REQUIRED COMPONENTS
+set(DEPEND_PACKS
   roscpp
   cv_bridge
   image_geometry
@@ -12,13 +11,12 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
+find_package(catkin REQUIRED COMPONENTS
+  ${DEPEND_PACKS}
+)
+
 catkin_package(CATKIN_DEPENDS
-  roscpp
-  cv_bridge
-  image_geometry
-  image_transport
-  sensor_msgs
-  std_msgs
+  ${DEPEND_PACKS}
 )
 
 include_directories(${catkin_INCLUDE_DIRS})
