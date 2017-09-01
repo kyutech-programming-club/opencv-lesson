@@ -1,6 +1,8 @@
 # opencv3mixing
 The ROS package to develop and test OpenCV3.
-頑張れ CIR-KIT 2017年度生！ <br>
+頑張れ CIR-KIT 2017年度生！
+
+
 質問などあったら上の方にある issue から @yasu80 とか, コラボレータになってる人に聞いてくれていいのよ<br>
 新たな知見などあったらwikiに追記してくれると嬉しい
 
