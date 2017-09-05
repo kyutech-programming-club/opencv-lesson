@@ -23,3 +23,6 @@ include_directories(${catkin_INCLUDE_DIRS})
 
 add_executable(minimum_node src/minimum.cpp)
 target_link_libraries(minimum_node ${catkin_LIBRARIES})
+
+add_executable(blur_node src/blur.cpp)
+target_link_libraries(blur_node ${catkin_LIBRARIES})
