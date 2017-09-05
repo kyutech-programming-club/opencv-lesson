@@ -11,7 +11,7 @@
   <url type="website">https://github.com/CIRKIT-ARC-1stGrade/opencv3mixing/wiki</url>
   <url type="repository">https://github.com/CIRKIT-ARC-1stGrade/opencv3mixing</url>
   <url type="bugtracker">https://github.com/CIRKIT-ARC-1stGrade/opencv3mixing/issues</url>
-  <author email="o111027y@mail.kyutech.jp>Doi Yusuke</author>
+  <author email="o111027y@mail.kyutech.jp">Doi Yusuke</author>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
