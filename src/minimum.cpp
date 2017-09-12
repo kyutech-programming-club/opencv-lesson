@@ -10,8 +10,8 @@ class ImageConverter
 {
   ros::NodeHandle nh_ {};
   ros::NodeHandle pnh_ {"~"};//ノードハンドル(プライベート)
-  image_transport::ImageTransport it_ {nh_};//Image_Transportデータクラスの作成:ノードハンドルを渡して初期化
-  image_transport::ImageTransport pit_ {pnh_};//image_transportデータクラスの作成:プライベートノードハンドルを渡して初期化
+  image_transport::ImageTransport it_ {nh_};//ImageTransportデータクラスの作成:ノードハンドルを渡して初期化
+  image_transport::ImageTransport pit_ {pnh_};//ImageTransportデータクラスの作成:プライベートノードハンドルを渡して初期化
   image_transport::Subscriber image_sub_ {it_.subscribe("input_image", 1, &ImageConverter::imageCb, this)};//thisはあるクラス内でそのクラス自身を指す参照(ポインタなど),これを介してROSトピックによるinputに付随するコールバック処理"imageCb"の実行
   image_transport::Publisher image_pub_ {pit_.advertise("image_raw", 1)};//image_rawトピックへの吐き出しを指定して, データサイズを"1"に指定
 
