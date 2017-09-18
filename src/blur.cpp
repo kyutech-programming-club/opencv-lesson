@@ -24,8 +24,8 @@ ImageBlurer::ImageBlurer()
     pnh_{"~"},
     it_{nh_},
     pit_{pnh_},
-    image_sub_{it_.subscribe("input_image", 1, &ImageBlurer::blur_image, this)},
-    image_pub_{pit_.advertise("image_raw", 1)}
+    image_sub_{it_.subscribe("src_image", 1, &ImageBlurer::blur_image, this)},
+    image_pub_{pit_.advertise("dest_image", 1)}
 {
 }
 
