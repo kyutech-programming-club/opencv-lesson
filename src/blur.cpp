@@ -33,7 +33,7 @@ void ImageBlurer::blur_image(const sensor_msgs::ImageConstPtr& msg)
 {
   try {
     cv::Mat dest_image;
-    cv::blur(cv_bridge::CvImagePtr{cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::BGR8)}->image, dest_image, cv::Size(2, 100));
+    cv::blur(cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::BGR8)->image, dest_image, cv::Size(2, 100));
     image_pub_.publish(cv_bridge::CvImage{std_msgs::Header{}, "bgr8", dest_image}.toImageMsg());
   }
   catch (cv_bridge::Exception& e) {
