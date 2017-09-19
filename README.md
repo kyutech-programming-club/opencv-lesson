@@ -21,7 +21,7 @@ Issue [#12](https://github.com/CIRKIT-ARC-1stGrade/opencv3mixing/issues/12) に�
  - 画像のMat構造体のどこに色要素があるかを確認.
  - 画像のハシからハシまでを検査し尽くす方法は.
  - ノイズ処理はどうか.
- 
+
 複数の答えが考えられるから、いろいろ試して精度の高い方法を割り出してね
 
 ## 2. 形状検出
@@ -44,8 +44,8 @@ Issue [#12](https://github.com/CIRKIT-ARC-1stGrade/opencv3mixing/issues/12) に�
 - [公式サンプル](http://opencv.jp/sample/object_detection.html)
 - [haarCascadeClassifier:顔認識によく使う分類器についての解説](http://docs.opencv.org/2.4/modules/objdetect/doc/cascade_classification.html)
 - [日本語の解説ページ:qiita](http://qiita.com/nonbiri15/items/c8e666c4964d09ace652)
+- [OpenCV 2.2 リファレンス](http://opencv.jp/opencv-2svn/cpp/)
 - これからの強化学習:[図書館](https://www.lib.kyutech.ac.jp/opac/volume/769623?current=1&locale=ja&q=これからの強化学習&target=l&total=1&trans_url=https%3A%2F%2Fwww.lib.kyutech.ac.jp%2Fopac%2Fhome%2Fresult%2Fja%3Fq%3D%25E3%2581%2593%25E3%2582%258C%25E3%2581%258B%25E3%2582%2589%25E3%2581%25AE%25E5%25BC%25B7%25E5%258C%2596%25E5%25AD%25A6%25E7%25BF%2592%26target%3Dl)　ISBN-10: 4627880316 どうやって強化学習が「特をする」相関関係を見つけていくかの数理が示されます:ロボット応用の話もあるよ
 
 ## 4. 最適化
 システムは実行環境(本番環境)において最適な速度を保つことが要求されます.
-
