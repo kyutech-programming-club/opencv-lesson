@@ -26,3 +26,6 @@ target_link_libraries(minimum_node ${catkin_LIBRARIES})
 
 add_executable(blur_node src/blur.cpp)
 target_link_libraries(blur_node ${catkin_LIBRARIES})
+
+add_executable(mask_node src/color_detect.cpp)
+target_link_libraries(mask_node ${catkin_LIBRARIES})
