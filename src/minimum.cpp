@@ -7,12 +7,12 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp> //inRange用
 
-#define LOW_B 0
-#define LOW_G 0
-#define LOW_R 150
-#define UP_B 110
-#define UP_G 165
-#define UP_R 255
+#define LOW_H 18 / 2 //Hは0~360の値を2で割る
+#define LOW_S 0.5 * 255 //Sは0~1の値に255を掛ける
+#define LOW_V 0 * 255 //VもSに同じ
+#define UP_H 36 / 2
+#define UP_S 1 * 255
+#define UP_V 1 * 255
 
 class ImageConverter
 {
@@ -28,10 +28,12 @@ public:
   {
     try {
       cv::Mat mask_img;
+      cv::Mat hsv_img;
       cv_bridge::CvImageConstPtr cv_ptr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::BGR8);
       cv_bridge::CvImageConstPtr mask_ptr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::BGR8);
 
-      cv::inRange(cv_ptr->image, cv::Scalar(LOW_B, LOW_G, LOW_R), cv::Scalar(UP_B, UP_G, UP_R), mask_img); //オレンジ色検出(閾値要調整)
+      cv::cvtColor(cv_ptr->image, hsv_img, CV_BGR2HSV);
+      cv::inRange(hsv_img, cv::Scalar(LOW_H, LOW_S, LOW_V), cv::Scalar(UP_H, UP_S, UP_V), mask_img); //オレンジ色検出(閾値要調整)
       cv::cvtColor(mask_img, mask_ptr->image, CV_GRAY2BGR, 3); //mask_img(1ch)を3chのMat画像(mask_ptr->image)に変換
       image_pub_.publish(mask_ptr->toImageMsg());
     }
