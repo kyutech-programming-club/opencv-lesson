@@ -3,10 +3,12 @@ project(opencv3mixing)
 add_compile_options(-std=c++11)
 
 set(DEPEND_PACKS
-  roscpp
   cv_bridge
+  dynamic_reconfigure
   image_geometry
   image_transport
+  roscpp
+  rospy
   sensor_msgs
   std_msgs
 )
@@ -15,9 +17,14 @@ find_package(catkin REQUIRED COMPONENTS
   ${DEPEND_PACKS}
 )
 
+generate_dynamic_reconfigure_options(
+  cfg/ColorThreshold.cfg
+)
+
 catkin_package(CATKIN_DEPENDS
   ${DEPEND_PACKS}
 )
+
 
 include_directories(${catkin_INCLUDE_DIRS})
 
@@ -29,3 +36,4 @@ target_link_libraries(blur_node ${catkin_LIBRARIES})
 
 add_executable(mask_node src/color_detect.cpp)
 target_link_libraries(mask_node ${catkin_LIBRARIES})
+add_dependencies(mask_node ${PROJECT_NAME}_gencfg)

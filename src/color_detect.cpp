@@ -2,17 +2,19 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
+#include <dynamic_reconfigure/server.h>
+#include <opencv3mixing/ColorThresholdConfig.h>
 
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp> //inRange用
 
-#define LOW_H 18 / 2 //Hは0~360の値を2で割る
-#define LOW_S 0.5 * 255 //Sは0~1の値に255を掛ける
-#define LOW_V 0 * 255 //VもSに同じ
-#define UP_H 36 / 2
-#define UP_S 1 * 255
-#define UP_V 1 * 255
+int low_h = 0;
+int low_s = 0;
+int low_v = 0;
+int high_h = 255;
+int high_s = 255;
+int high_v = 255;
 
 class ImageConverter
 {
@@ -33,7 +35,7 @@ public:
       cv_bridge::CvImageConstPtr mask_ptr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::BGR8);
 
       cv::cvtColor(cv_ptr->image, hsv_img, CV_BGR2HSV);
-      cv::inRange(hsv_img, cv::Scalar(LOW_H, LOW_S, LOW_V), cv::Scalar(UP_H, UP_S, UP_V), mask_img); //オレンジ色検出
+      cv::inRange(hsv_img, cv::Scalar(low_h, low_s, low_v), cv::Scalar(high_h, high_s, high_v), mask_img); //オレンジ色検出
       cv::cvtColor(mask_img, mask_ptr->image, CV_GRAY2BGR, 3); //mask_img[1ch]を3chのMat画像(mask_ptr->image)に変換
       image_pub_.publish(mask_ptr->toImageMsg());
     }
@@ -43,10 +45,24 @@ public:
   }
 };
 
+void receive_threshold(opencv3mixing::ColorThresholdConfig& config, uint32_t level)
+{
+  low_h = config.low_h;
+  low_s = config.low_s;
+  low_v = config.low_v;
+  high_h = config.high_h;
+  high_s = config.high_s;
+  high_v = config.high_s;
+}
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "image_converter");
   ImageConverter ic {};
+  dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig> server;
+  dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig>::CallbackType f;
+  f = boost::bind(&receive_threshold, _1, _2);
+  server.setCallback(f);
   ros::spin();
   return 0;
 }
