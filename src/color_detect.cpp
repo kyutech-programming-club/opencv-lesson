@@ -9,13 +9,6 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp> //inRange用
 
-int low_h = 0;
-int low_s = 0;
-int low_v = 0;
-int high_h = 255;
-int high_s = 255;
-int high_v = 255;
-
 class ImageConverter
 {
   ros::NodeHandle nh_ {};
@@ -26,6 +19,8 @@ class ImageConverter
   image_transport::Publisher image_pub_ {pit_.advertise("image_raw", 1)};
   dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig> server{};
   dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig>::CallbackType f{boost::bind(&ImageConverter::receive_threshold, this, _1, _2)};
+  int  low_h,  low_s,  low_v;
+  int high_h, high_s, high_v;
 public:
   ImageConverter()
   {
