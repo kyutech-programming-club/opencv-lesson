@@ -16,16 +16,6 @@ int high_h = 255;
 int high_s = 255;
 int high_v = 255;
 
-void receive_threshold(opencv3mixing::ColorThresholdConfig& config, uint32_t level)
-{
-  low_h = config.low_h;
-  low_s = config.low_s;
-  low_v = config.low_v;
-  high_h = config.high_h;
-  high_s = config.high_s;
-  high_v = config.high_s;
-}
-
 class ImageConverter
 {
   ros::NodeHandle nh_ {};
@@ -35,7 +25,7 @@ class ImageConverter
   image_transport::Subscriber image_sub_ {it_.subscribe("input_image", 1, &ImageConverter::imageCb, this)};
   image_transport::Publisher image_pub_ {pit_.advertise("image_raw", 1)};
   dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig> server{};
-  dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig>::CallbackType f{boost::bind(&receive_threshold, _1, _2)};
+  dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig>::CallbackType f{boost::bind(&ImageConverter::receive_threshold, this, _1, _2)};
 public:
   ImageConverter()
   {
@@ -57,6 +47,15 @@ public:
     catch (cv_bridge::Exception& e) {
       ROS_ERROR_STREAM("cv_bridge exception: " << e.what());
     }
+  }
+  void receive_threshold(opencv3mixing::ColorThresholdConfig& config, uint32_t level)
+  {
+    low_h = config.low_h;
+    low_s = config.low_s;
+    low_v = config.low_v;
+    high_h = config.high_h;
+    high_s = config.high_s;
+    high_v = config.high_s;
   }
 };
 
