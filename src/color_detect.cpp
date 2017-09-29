@@ -53,13 +53,8 @@ public:
   }
   void update_threshold(opencv3mixing::ColorThresholdConfig& config, uint32_t level)
   {
-    ROS_INFO("level = %d", level);
-    low_h_ = config.low_h;
-    low_s_ = config.low_s;
-    low_v_ = config.low_v;
-    high_h_ = config.high_h;
-    high_s_ = config.high_s;
-    high_v_ = config.high_s;
+    low_h_  = config.low_h;  low_s_  = config.low_s;  low_v_ = config.low_v;
+    high_h_ = config.high_h; high_s_ = config.high_s; high_v_ = config.high_s;
   }
 };
 
