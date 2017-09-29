@@ -11,18 +11,26 @@
 
 class ImageConverter
 {
-  ros::NodeHandle nh_ {};
-  ros::NodeHandle pnh_ {"~"};
-  image_transport::ImageTransport it_ {nh_};
-  image_transport::ImageTransport pit_ {pnh_};
-  image_transport::Subscriber image_sub_ {it_.subscribe("input_image", 1, &ImageConverter::imageCb, this)};
-  image_transport::Publisher image_pub_ {pit_.advertise("image_raw", 1)};
-  dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig> server_{};
-  dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig>::CallbackType f_{boost::bind(&ImageConverter::update_threshold, this, _1, _2)};
+  ros::NodeHandle nh_;
+  ros::NodeHandle pnh_;
+  image_transport::ImageTransport it_;
+  image_transport::ImageTransport pit_;
+  image_transport::Subscriber image_sub_;
+  image_transport::Publisher image_pub_;
+  dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig> server_;
+  dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig>::CallbackType f_;
   int  low_h_,  low_s_,  low_v_;
   int high_h_, high_s_, high_v_;
 public:
   ImageConverter()
+    : nh_ {},
+      pnh_ {"~"},
+      it_ {nh_},
+      pit_ {pnh_},
+      image_sub_ {it_.subscribe("input_image", 1, &ImageConverter::imageCb, this)},
+      image_pub_ {pit_.advertise("image_raw", 1)},
+      server_{},
+      f_{boost::bind(&ImageConverter::update_threshold, this, _1, _2)}
   {
     server_.setCallback(f_);
   }
@@ -45,7 +53,7 @@ public:
   }
   void update_threshold(opencv3mixing::ColorThresholdConfig& config, uint32_t level)
   {
-    ROS_INFO("HEY!!!!");
+    ROS_INFO("level = %d", level);
     low_h_ = config.low_h;
     low_s_ = config.low_s;
     low_v_ = config.low_v;
