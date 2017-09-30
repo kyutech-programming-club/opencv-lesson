@@ -9,6 +9,7 @@ set(DEPEND_PACKS
   image_transport
   sensor_msgs
   std_msgs
+  dynamic_reconfigure
 )
 
 find_package(catkin REQUIRED COMPONENTS
@@ -17,6 +18,10 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(CATKIN_DEPENDS
   ${DEPEND_PACKS}
+)
+
+generate_dynamic_reconfigure_options(
+  cfg/ColorThreshold.cfg
 )
 
 include_directories(${catkin_INCLUDE_DIRS})
