@@ -26,3 +26,6 @@ target_link_libraries(minimum_node ${catkin_LIBRARIES})
 
 add_executable(blur_node src/blur.cpp)
 target_link_libraries(blur_node ${catkin_LIBRARIES})
+
+add_executable(edge_detect_node src/edge_detector.cpp)
+target_link_libraries(edge_detect_node ${catkin_LIBRARIES})
