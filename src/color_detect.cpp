@@ -19,8 +19,8 @@ class ImageConverter
   image_transport::Publisher image_pub_;
   dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig> server_;
   dynamic_reconfigure::Server<opencv3mixing::ColorThresholdConfig>::CallbackType f_;
-  int  low_h_,  low_s_,  low_v_;
-  int high_h_, high_s_, high_v_;
+  float  low_h_,  low_s_,  low_v_;
+  float high_h_, high_s_, high_v_;
 public:
   ImageConverter()
     : nh_ {},
@@ -53,8 +53,13 @@ public:
   }
   void update_threshold(opencv3mixing::ColorThresholdConfig& config, uint32_t level)
   {
-    low_h_  = config.low_h;  low_s_  = config.low_s;  low_v_ = config.low_v;
-    high_h_ = config.high_h; high_s_ = config.high_s; high_v_ = config.high_s;
+    low_h_  = config.center_h/2 - config.range_h/4;
+    low_s_  = static_cast<float>(config.center_s)*2.55 - static_cast<float>(config.range_s)*2.55/2;
+    low_v_  = static_cast<float>(config.center_v)*2.55 - static_cast<float>(config.range_v)*2.55/2;
+
+    high_h_ = config.center_h/2 + config.range_h/4;
+    high_s_ = static_cast<float>(config.center_s)*2.55 + static_cast<float>(config.range_s)*2.55/2;
+    high_v_ = static_cast<float>(config.center_v)*2.55 + static_cast<float>(config.range_v)*2.55/2;
   }
 };
 
