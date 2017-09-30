@@ -54,12 +54,12 @@ public:
   void update_threshold(opencv3mixing::ColorThresholdConfig& config, uint32_t level)
   {
     low_h_  = config.center_h/2 - config.range_h/4;
-    low_s_  = static_cast<float>(config.center_s)*2.55 - static_cast<float>(config.range_s)*2.55/2;
-    low_v_  = static_cast<float>(config.center_v)*2.55 - static_cast<float>(config.range_v)*2.55/2;
+    low_s_  = config.center_s*2.55 - config.range_s*2.55/2;
+    low_v_  = config.center_v*2.55 - config.range_v*2.55/2;
 
     high_h_ = config.center_h/2 + config.range_h/4;
-    high_s_ = static_cast<float>(config.center_s)*2.55 + static_cast<float>(config.range_s)*2.55/2;
-    high_v_ = static_cast<float>(config.center_v)*2.55 + static_cast<float>(config.range_v)*2.55/2;
+    high_s_ = config.center_s*2.55 + config.range_s*2.55/2;
+    high_v_ = config.center_v*2.55 + config.range_v*2.55/2;
   }
 };
 
