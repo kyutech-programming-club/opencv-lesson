@@ -19,7 +19,10 @@ private:
 
 void EdgeDetector::detect_edge(const sensor_msgs::ImageConstPtr& msg)
 {
-  pub_.publish(msg);
+  cv_bridge::CvImageConstPtr src{cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::MONO8)};
+  cv::Mat dest{};
+  cv::Canny(src->image, dest, 50, 200);
+  pub_.publish(cv_bridge::CvImage{std_msgs::Header{}, "mono8", dest}.toImageMsg());
 }
 
 int main(int argc, char** argv)
