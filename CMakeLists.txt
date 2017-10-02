@@ -9,10 +9,15 @@ set(DEPEND_PACKS
   image_transport
   sensor_msgs
   std_msgs
+  dynamic_reconfigure
 )
 
 find_package(catkin REQUIRED COMPONENTS
   ${DEPEND_PACKS}
+)
+
+generate_dynamic_reconfigure_options(
+  cfg/EdgeParam.cfg
 )
 
 catkin_package(CATKIN_DEPENDS
@@ -29,3 +34,4 @@ target_link_libraries(blur_node ${catkin_LIBRARIES})
 
 add_executable(edge_detect_node src/edge_detector.cpp)
 target_link_libraries(edge_detect_node ${catkin_LIBRARIES})
+add_dependencies(edge_detect_node ${PROJECT_NAME}_gencfg)
