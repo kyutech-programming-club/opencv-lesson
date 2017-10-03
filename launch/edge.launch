@@ -12,4 +12,6 @@
 
   <node pkg="image_view2" type="image_view2" name="view" />
 
+  <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" />
+
 </launch>
