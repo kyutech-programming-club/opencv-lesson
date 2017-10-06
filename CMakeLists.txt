@@ -25,7 +25,6 @@ catkin_package(CATKIN_DEPENDS
   ${DEPEND_PACKS}
 )
 
-
 include_directories(${catkin_INCLUDE_DIRS})
 
 add_executable(minimum_node src/minimum.cpp)
