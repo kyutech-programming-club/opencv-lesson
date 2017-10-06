@@ -2,12 +2,12 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
-#include <dynamic_reconfigure/server.h>
+
+#include <dynamic_reconfigure/server.h> // for dynamic_reconfigure
 #include <opencv3mixing/ColorThresholdConfig.h>
 
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/opencv.hpp> //inRange用
+#include <opencv2/imgproc.hpp>  // for cvtColor
+#include <opencv2/opencv.hpp>   // for inRange
 
 class ImageConverter
 {
