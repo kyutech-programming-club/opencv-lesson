@@ -2,12 +2,12 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
-#include <dynamic_reconfigure/server.h>
+
+#include <dynamic_reconfigure/server.h> // for dynamic_reconfigure
 #include <opencv3mixing/ColorThresholdConfig.h>
 
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/opencv.hpp> //inRange用
+#include <opencv2/imgproc.hpp>  // for cvtColor
+#include <opencv2/opencv.hpp>   // for inRange
 
 class ImageConverter
 {
@@ -37,15 +37,11 @@ public:
   void imageCb(const sensor_msgs::ImageConstPtr& msg)
   {
     try {
-      cv::Mat mask_img;
-      cv::Mat hsv_img;
-      cv_bridge::CvImageConstPtr cv_ptr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::BGR8);
-      cv_bridge::CvImageConstPtr mask_ptr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::BGR8);
-
-      cv::cvtColor(cv_ptr->image, hsv_img, CV_BGR2HSV);
-      cv::inRange(hsv_img, cv::Scalar(low_h_, low_s_, low_v_), cv::Scalar(high_h_, high_s_, high_v_), mask_img); //オレンジ色検出
-      cv::cvtColor(mask_img, mask_ptr->image, CV_GRAY2BGR, 3); //mask_img[1ch]を3chのMat画像(mask_ptr->image)に変換
-      image_pub_.publish(mask_ptr->toImageMsg());
+      cv_bridge::CvImagePtr img_ptr{cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8)};
+      cv::cvtColor(img_ptr->image, img_ptr->image, CV_BGR2HSV); // BGR -> HSV.
+      cv::inRange(img_ptr->image, cv::Scalar{low_h_, low_s_, low_v_}, cv::Scalar{high_h_, high_s_, high_v_}, img_ptr->image); // Detect orange.
+      cv::cvtColor(img_ptr->image, img_ptr->image, CV_GRAY2BGR, 3); // 1ch -> 3ch.
+      image_pub_.publish(img_ptr->toImageMsg());
     }
     catch (cv_bridge::Exception& e) {
       ROS_ERROR_STREAM("cv_bridge exception: " << e.what());
@@ -53,13 +49,13 @@ public:
   }
   void update_threshold(opencv3mixing::ColorThresholdConfig& config, uint32_t level)
   {
-    low_h_  = config.center_h/2 - config.range_h/4;
-    low_s_  = config.center_s*2.55 - config.range_s*2.55/2;
-    low_v_  = config.center_v*2.55 - config.range_v*2.55/2;
+    low_h_  = (config.center_h - config.range_h*0.5)*0.5;
+    low_s_  = (config.center_s - config.range_s*0.5)*2.55;
+    low_v_  = (config.center_v - config.range_v*0.5)*2.55;
 
-    high_h_ = config.center_h/2 + config.range_h/4;
-    high_s_ = config.center_s*2.55 + config.range_s*2.55/2;
-    high_v_ = config.center_v*2.55 + config.range_v*2.55/2;
+    high_h_ = (config.center_h + config.range_h*0.5)*0.5;
+    high_s_ = (config.center_s + config.range_s*0.5)*2.55;
+    high_v_ = (config.center_v + config.range_v*0.5)*2.55;
   }
 };
 
