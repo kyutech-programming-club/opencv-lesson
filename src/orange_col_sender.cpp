@@ -26,10 +26,11 @@ public:
     try {
       cv_bridge::CvImageConstPtr img_ptr{cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::MONO8)};
       std_msgs::Int32MultiArray dest{};
-      const int begin{0}, square_size{15}, end{img_ptr->image.rows-square_size};
+      const int begin{0}, square_size{15}, end{img_ptr->image.rows-square_size}, threshold{200};
       for (int y{begin}; y < end; ++y)
         for (int x{0}; x < img_ptr->image.cols-square_size; ++x)
-          if (cv::mean(cv::Mat{img_ptr->image, cv::Rect{x, y, square_size, square_size}})[0] > 200) dest.data.push_back(x);
+          if (cv::mean(cv::Mat{img_ptr->image, cv::Rect{x, y, square_size, square_size}})[0] > threshold)
+            dest.data.push_back(x-img_ptr->image.rows*0.5);
       pub_.publish(dest);
     }
     catch (cv_bridge::Exception& e) {
