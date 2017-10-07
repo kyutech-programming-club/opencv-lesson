@@ -19,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 generate_dynamic_reconfigure_options(
   cfg/ColorThreshold.cfg
+  cfg/OrangeColSender.cfg
 )
 
 catkin_package(CATKIN_DEPENDS
@@ -39,3 +40,4 @@ add_dependencies(mask_node ${PROJECT_NAME}_gencfg)
 
 add_executable(orange_col_sender src/orange_col_sender.cpp)
 target_link_libraries(orange_col_sender ${catkin_LIBRARIES})
+add_dependencies(orange_col_sender ${PROJECT_NAME}_gencfg)

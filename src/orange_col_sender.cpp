@@ -7,6 +7,9 @@
 #include "std_msgs/MultiArrayDimension.h"
 #include "std_msgs/Int32MultiArray.h"
 
+#include <dynamic_reconfigure/server.h> // for dynamic_reconfigure
+#include <opencv3mixing/OrangeColSenderConfig.h>
+
 #include <opencv2/imgproc.hpp>  // for cvtColor
 #include <opencv2/opencv.hpp>   // for inRange
 
@@ -17,12 +20,15 @@ class OrangeColSender
 public:
   OrangeColSender();
   void send_col(const sensor_msgs::ImageConstPtr& msg);
+  void update_param(opencv3mixing::OrangeColSenderConfig& config, uint32_t level);
 private:
   ros::NodeHandle nh_{};
   ros::NodeHandle pnh_{"~"};
   image_transport::ImageTransport it_{nh_};
   image_transport::Subscriber sub_{it_.subscribe("mask_image", 1, &OrangeColSender::send_col, this)};
   ros::Publisher pub_{nh_.advertise<std_msgs::Int32MultiArray>("orange_col", 1000)};
+  dynamic_reconfigure::Server<opencv3mixing::OrangeColSenderConfig> server_{};
+  dynamic_reconfigure::Server<opencv3mixing::OrangeColSenderConfig>::CallbackType f_{boost::bind(&OrangeColSender::update_param, this, _1, _2)};
   int begin_, square_size_, end_;
   int threshold_;
   int row_stride_, col_stride_;
@@ -33,6 +39,7 @@ OrangeColSender::OrangeColSender()
     threshold_{200},
     row_stride_{1}, col_stride_{1}
 {
+  server_.setCallback(f_);
 }
 
 void OrangeColSender::send_col(const sensor_msgs::ImageConstPtr& msg)
@@ -49,6 +56,13 @@ void OrangeColSender::send_col(const sensor_msgs::ImageConstPtr& msg)
   }
   catch (int rows) { ROS_ERROR_STREAM("ATTENTION: Image's \"rows\" is " << rows << ", not " << default_rows); }
   catch (cv_bridge::Exception& e) { ROS_ERROR_STREAM("cv_bridge exception: " << e.what()); } 
+}
+
+void OrangeColSender::update_param(opencv3mixing::OrangeColSenderConfig& config, uint32_t level)
+{
+  begin_ = config.begin; square_size_ = config.size; end_ = config.end;
+  threshold_ = config.threshold;
+  row_stride_ = config.row_stride; col_stride_ = config.col_stride;
 }
 
 int main(int argc, char** argv)
