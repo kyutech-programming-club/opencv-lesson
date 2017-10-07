@@ -36,3 +36,6 @@ target_link_libraries(blur_node ${catkin_LIBRARIES})
 add_executable(mask_node src/color_detect.cpp)
 target_link_libraries(mask_node ${catkin_LIBRARIES})
 add_dependencies(mask_node ${PROJECT_NAME}_gencfg)
+
+add_executable(orange_col_sender src/orange_col_sender.cpp)
+target_link_libraries(orange_col_sender ${catkin_LIBRARIES})
