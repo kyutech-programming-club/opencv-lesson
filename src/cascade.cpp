@@ -35,7 +35,8 @@ void CascadeDetector::cascade(const sensor_msgs::ImageConstPtr& msg)
   cv::Mat small_img{cv::saturate_cast<int>(src_img->image.rows/scale), cv::saturate_cast<int>(src_img->image.cols/scale), CV_8UC1};
   cv::resize(src_img->image, small_img, small_img.size(), 0, 0, cv::INTER_LINEAR);
   cv::equalizeHist(small_img, small_img);
-  std::string cascade_name{"/home/tanacchi/cascade.xml"};
+  // std::string cascade_name{"opencv3mixing/cascades/scottie.xml"};
+  std::string cascade_name{"/home/tanacchi/works/opencv/src/opencv3mixing/cascades/face.xml"};
   cv::CascadeClassifier cascade;
   if (!cascade.load(cascade_name)) ROS_INFO("Failed to open cascade file");
   std::vector<cv::Rect> scotties;
