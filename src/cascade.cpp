@@ -38,16 +38,15 @@ void CascadeDetector::cascade(const sensor_msgs::ImageConstPtr& msg)
   // std::string cascade_name{"opencv3mixing/cascades/scottie.xml"};
   std::string cascade_name{"/home/tanacchi/works/opencv/src/opencv3mixing/cascades/face.xml"};
   cv::CascadeClassifier cascade;
-  if (!cascade.load(cascade_name)) ROS_INFO("Failed to open cascade file");
+  cascade.load(cascade_name);
   std::vector<cv::Rect> scotties;
   cascade.detectMultiScale(small_img, scotties, 1.1, 2, CV_HAAR_SCALE_IMAGE, cv::Size(30, 30));
-  std::vector<cv::Rect>::const_iterator r = scotties.begin();
-  for (; r != scotties.end(); ++r) {
-    cv::Point center;
-    int radius;
-    center.x = cv::saturate_cast<int>((r->x + r->width*0.5)*scale);
-    center.y = cv::saturate_cast<int>((r->y + r->height*0.5)*scale);
-    radius = cv::saturate_cast<int>((r->width + r->height)*0.25*scale);
+  cv::Point center;
+  int radius;
+  for (const auto& elem : scotties) {
+    center.x = cv::saturate_cast<int>((elem.x + elem.width*0.5)*scale);
+    center.y = cv::saturate_cast<int>((elem.y + elem.height*0.5)*scale);
+    radius = cv::saturate_cast<int>((elem.width + elem.height)*0.25*scale);
     cv::circle(src_img->image, center, radius, cv::Scalar(80, 80, 255), 3, 8, 0);
   }
   image_pub_.publish(src_img->toImageMsg());
